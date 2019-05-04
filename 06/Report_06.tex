@@ -1,0 +1,170 @@
+\documentclass{ctexart}
+\textheight 23.5cm \textwidth 15.8cm
+\topmargin -1.5cm \oddsidemargin 0.3cm \evensidemargin -0.3cm
+
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+
+\pagestyle{fancy}
+\CTEXsetup[format = {\Large\bfseries\it}]{section}
+
+
+\begin{document}
+
+\section*{内容简介}
+	\noindent 一、分别编写用复化Simpson积分公式和复化梯形积分公式计算积分的通用程序。
+	
+	\noindent 二、用如上程序计算积分
+	\begin{equation}
+		I(f) = \int_0^4\sin(x)dx
+	\end{equation}
+	取节点 $x_i$，$i = 0, \cdots, N$，$N$ 为 $2^k$，$k = 1, \cdots, 12$，并分析误差。
+	
+	\noindent 利用公式计算算法的收敛阶：
+	\begin{equation}
+		Ord = \dfrac{\ln(Error_{old} /Error_{now})}{ln(N_{now} /N_{old})}
+	\end{equation}
+
+\section*{输出结果}
+
+\begin{verbatim}
+	Integrate[sin(x), 0, 4] = 1.653643620864
+	
+	Composite Trapezoid Method:
+	I(k = 1) = 1.061792358343 	 Error = 0.591851262520 	 Order = 0.0000
+	I(k = 2) = 1.513487172039 	 Error = 0.140156448824 	 Order = 2.0782
+	I(k = 3) = 1.619048306831 	 Error = 0.034595314033 	 Order = 2.0184
+	I(k = 4) = 1.645021908709 	 Error = 0.008621712154 	 Order = 2.0045
+	I(k = 5) = 1.651489878133 	 Error = 0.002153742731 	 Order = 2.0011
+	I(k = 6) = 1.653105290366 	 Error = 0.000538330498 	 Order = 2.0003
+	I(k = 7) = 1.653509044811 	 Error = 0.000134576053 	 Order = 2.0001
+	I(k = 8) = 1.653609977261 	 Error = 0.000033643602 	 Order = 2.0000
+	I(k = 9) = 1.653635209989 	 Error = 0.000008410875 	 Order = 2.0000
+	I(k = 10) = 1.653641518146 	 Error = 0.000002102717 	 Order = 2.0000
+	I(k = 11) = 1.653643095184 	 Error = 0.000000525679 	 Order = 2.0000
+	I(k = 12) = 1.653643489444 	 Error = 0.000000131420 	 Order = 2.0000
+	Composite Simpson Method:
+	I(k = 1) = 1.920258141330 	 Error = 0.266614520466 	 Order = 0.0000
+	I(k = 2) = 1.664052109938 	 Error = 0.010408489075 	 Order = 4.6789
+	I(k = 3) = 1.654235351762 	 Error = 0.000591730898 	 Order = 4.1367
+	I(k = 4) = 1.653679776002 	 Error = 0.000036155138 	 Order = 4.0327
+	I(k = 5) = 1.653645867940 	 Error = 0.000002247077 	 Order = 4.0081
+	I(k = 6) = 1.653643761110 	 Error = 0.000000140246 	 Order = 4.0020
+	I(k = 7) = 1.653643629626 	 Error = 0.000000008762 	 Order = 4.0005
+	I(k = 8) = 1.653643621411 	 Error = 0.000000000548 	 Order = 4.0001
+	I(k = 9) = 1.653643620898 	 Error = 0.000000000034 	 Order = 4.0000
+	I(k = 10) = 1.653643620866 	 Error = 0.000000000002 	 Order = 3.9997
+	I(k = 11) = 1.653643620864 	 Error = 0.000000000000 	 Order = 4.0053
+	I(k = 12) = 1.653643620864 	 Error = 0.000000000000 	 Order = 3.6742
+\end{verbatim}
+
+\begin{table}[htb]
+	\centering
+	\bigskip
+	\begin{small}
+		\begin{tabular}{|c|cc|cc|}
+			\hline
+			n & Composite Trapezoid Error & order & Composite Simpson Error & order\\\hline
+			1 & 5.9185E-01 & -- & 2.6661E-01 & --\\
+			2 & 1.4015E-01 & 2.0782 & 1.0408E-02 & 4.6789\\
+			3 & 3.4595E-02 & 2.0184 & 5.9173E-04 & 4.1367\\
+			4 & 8.6217E-03 & 2.0045 & 3.6155E-05 & 4.0327\\
+			5 & 2.1537E-03 & 2.0011 & 2.2470E-06 & 4.0081\\
+			6 & 5.3833E-04 & 2.0003 & 1.4024E-07 & 4.0020\\
+			7 & 1.3457E-04 & 2.0001 & 8.7623E-09 & 4.0005\\
+			8 & 3.3643E-05 & 2.0000 & 5.4759E-10 & 4.0001\\
+			9 & 8.4108E-06 & 2.0000 & 3.4224E-11 & 4.0000\\
+			10 & 2.1027E-06 & 2.0000 & 2.1394E-12 & 3.9997\\
+			11 & 5.2567E-07 & 2.0000 & 1.3322E-13 & 4.0053\\
+			12 & 1.3141E-07 & 2.0000 & 1.0436E-14 & 3.6742\\\hline
+		\end{tabular}
+	\end{small}
+	\caption{\label{table.label} $L_\infty$ 范数意义下的精度检验} 
+\end{table}
+
+\section*{误差分析}
+	\noindent 一、本实验中使用的复化梯形公式为：
+	\begin{equation}
+		\int_a^b f(x)dx \approx \dfrac{h}{2}\left(f(a) + 2\sum_{i = 1}^{2^k - 1} f(a + ih) + f(b)\right)
+	\end{equation}
+	
+	其中 $h = \dfrac{b - a}{2^k}$，记结点为 $x_0, \cdots, x_{2^k}$。下面对其作简单推导并分析该公式的误差。对子区间 $[x_{i},\,x_{i+1}] = [a + ih,\, a + (i+1)h]$，用Lagrange插值法逼近 $f$ 得：
+	\begin{equation}
+			f(x) = p(x) + \dfrac{1}{2!}f''(\xi_i)(x - x_{i})(x - x_{i+1})
+	\end{equation}
+	
+	其中 
+	\begin{align}
+		p(x) & = f(x_i)\dfrac{x_{i+1} - x}{x_{i+1} - x_{i}} + f(x_{i+1})\dfrac{x - x_{i}}{x_{i+1} - x_{i}}\\
+		& = \dfrac{1}{h}\left(f(x_i)(x_{i+1} - x) + f(x_{i+1})(x - x_{i})\right)
+	\end{align}
+	
+	故
+	\begin{align*}
+		\int_{x_i}^{x_{i+1}} f(x)dx & = \int_{x_i}^{x_{i+1}} p(x) dx + \dfrac{1}{2} \int_{x_i}^{x_{i+1}} f''(\xi_i)(x - x_{i})(x - x_{i+1}) dx\\
+		& = \dfrac{h}{2} \Big(f(x_i) + f(x_{i+1})\Big) + \dfrac{1}{12}f''(\xi_i)h^3
+	\end{align*}
+	
+	对等号两端求和：
+	\begin{align*}
+		\int_a^b f(x)dx & = \sum_{i = 0}^{2^k - 1}\int_{x_i}^{x_{i+1}} f(x)dx\\
+		& = \dfrac{h}{2} \sum_{i = 0}^{2^k - 1}\left(f(x_i) + f(x_{i+1}) + \dfrac{1}{12}f''(\xi_i)h^3\right)\\
+		& = \dfrac{h}{2}\left(f(a) + 2\sum_{i = 1}^{2^k - 1} f(a + ih) + f(b)\right) + \dfrac{h^3}{12}\sum_{i = 0}^{2^k - 1}f''(\xi)
+	\end{align*}
+	
+	设 $f''(x)$ 连续。那么在 $(a,\,b)$ 中存在一点 $\xi$ 使得
+	\begin{equation}
+		f''(\xi) = \dfrac{1}{n}\sum_{i = 0}^{n - 1}f''(\xi_i)
+	\end{equation}
+	
+	其中 $\xi_i \in (x_{i}, x_{i+1})$，$n = \dfrac{b - a}{h} = 2^k$。那么：
+	\begin{equation}
+		\int_a^b f(x)dx = \dfrac{h}{2}\left(f(a) + 2\sum_{i = 1}^{2^k - 1} f(a + ih) + f(b)\right) + \dfrac{h^2}{12}(b - a)f''(\xi)
+	\end{equation}
+	误差项为 $O(h^2)$，与实验所得结果是一致的。\\
+	
+	二、本实验使用的复化Simpson公式为：
+	\begin{equation}
+		\int_a^b f(x)dx \approx \dfrac{h}{6}\left(f(a) + 2\sum_{i = 1}^{2^{k-1} - 1} f(a + ih) + 4\sum_{i = 0}^{2^{k-1} - 1} f(a + (i+\dfrac{1}{2})h) + f(b)\right)
+	\end{equation}
+	
+	其中 $h = \dfrac{b - a}{2^{k-1}}$。这里不再列出误差项推导，而直接由 [1] 得该公式的误差项为 $-\dfrac{1}{180}(2h)^4 f^{(4)}(\xi) = -\dfrac{8}{45}h^4 f^{(4)}(\xi) = O(h^4)$，$\xi \in (a,\,b)$。\\
+	
+	$O(h^4)$ 的误差项与实验结果基本一致。但注意到实验中，在 $k = 12$ 处收敛阶突然减小。为进一步观察此现象，修改源代码，增加 $k$，得如下结果：
+	\begin{verbatim}
+		Integrate[sin(x), 0, 4] = 1.65364362086361182946
+			...
+		Composite Simpson Method:
+			...		
+		I(k = 11) = 1.65364362086374505623 	 Error = 1.332268e-13 	 Order = 4.0053
+		I(k = 12) = 1.65364362086362226556 	 Error = 1.043610e-14 	 Order = 3.6742
+		I(k = 13) = 1.65364362086361538218 	 Error = 3.552714e-15 	 Order = 1.5546
+		I(k = 14) = 1.65364362086361005311 	 Error = 1.776357e-15 	 Order = 1.0000
+		I(k = 15) = 1.65364362086362137738 	 Error = 9.547918e-15 	 Order = -2.4263
+		I(k = 16) = 1.65364362086360472404 	 Error = 7.105427e-15 	 Order = 0.4263
+		I(k = 17) = 1.65364362086360938697 	 Error = 2.442491e-15 	 Order = 1.5406
+		I(k = 18) = 1.65364362086363958504 	 Error = 2.775558e-14 	 Order = -3.5064
+		I(k = 19) = 1.65364362086361693649 	 Error = 5.107026e-15 	 Order = 2.4422
+		I(k = 20) = 1.65364362086360716653 	 Error = 4.662937e-15 	 Order = 0.1312
+	\end{verbatim}
+	
+	注意到 $k = 15$ 比 $k = 14$ 误差反而更大，说明数值积分中的舍入误差影响此时不可忽视。
+		
+	另外，python3.7 的 numpy.float64 类型的精度为52位，而 $2^{52}$ 的十进制数量级为 $10^{16}$。本实验中，由 scipy 包的 integrate 函数计算出的积分值量级为 $10^0$，将其视为精确值。$k > 11$ 后，数值积分值与精确值的偏差的量级在 $10^{-15}$ 左右，接近 float64 的精度极限。计算误差 Error 中浮点数减法导致的有效位数字损失的影响在 $k > 11$ 后将不可忽略。
+	
+\section*{工作环境}
+	主要程序语言： {\bf python}
+
+	软件： {\bf JupyterLab}
+	
+	使用的包： {\bf numpy, scipy}
+	
+\section*{参考资料}
+	\noindent [1] David R. Kincaid \& E. Ward Cheney. {\it Numerical Analysis: Mathematics of Scientific of Computing Third Edition}, Brooks/Cole, 2002.
+
+\end{document}
