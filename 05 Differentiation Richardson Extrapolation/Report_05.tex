@@ -1,0 +1,103 @@
+\documentclass{ctexart}
+
+\usepackage[left=0.8cm, right=0.8cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+
+\pagestyle{fancy}
+\CTEXsetup[format = {\Large\bfseries\it}]{section}
+
+
+\begin{document}
+
+\section*{内容简介}
+	 编程实现用 Richardson外推计算 $f'(x)$ 的值，$h = 1$。函数 $f(x)$ 分别取
+	 \begin{enumerate}
+	 	\item $\ln x \qquad\qquad x = 3 \qquad M = 3$
+	 	\item $\tan x \qquad x = \arcsin 0.8 \qquad M = 4$
+	 	\item $\sin(x^2 + \dfrac{1}{3}x) \qquad x = 0 \qquad M = 5$
+	 \end{enumerate}
+ 	输出相应的三角阵列
+ 	\begin{equation*}
+	 	\begin{matrix}
+	 		& D(0, 0) & & & &\\
+	 		& D(1, 0) & D(1, 1) & & &\\
+	 		& D(2, 0) & D(2, 1) & D(2, 2) & &\\
+	 		& \vdots & \vdots & \vdots & \ddots &\\
+	 		& D(M, 0) & D(M, 1) & D(M, 2) & \cdots & D(M, M)
+	 	\end{matrix}
+	\end{equation*}
+	 	
+\section*{工作环境}
+	程序所用语言： {\bf python}
+	
+	软件： {\bf JupyterLab}
+	
+	使用的包： {\bf numpy, matplotlib, bisect}
+
+\section*{输出结果}
+
+\begin{verbatim}
+	log(x), x = 3, h = 1, M = 3
+	D(*, 0) = [0.346573590280, 0.336472236621, 0.334108169326, 0.333526435756]
+	D(*, 1) = [0.333105118735, 0.333320146895, 0.333332524566]
+	D(*, 2) = [0.333334482105, 0.333333349744]
+	D(*, 3) = [0.333333331770]
+	error = 0.000000001563060181286602
+	
+	tan(x), x = arcsin 0.8, h = 1, M = 4
+	D(*, 0) = [-1.306186251360, 6.465336386487, 3.209099924788, 2.872980093931, 2.800901808516]
+	D(*, 1) = [9.055843932436, 2.123687770888, 2.760940150312, 2.776875713378]
+	D(*, 2) = [1.661544026785, 2.803423642273, 2.777938084249]
+	D(*, 3) = [2.821548715535, 2.777533551582]
+	D(*, 4) = [2.777360943096]
+	error = 0.000416834681740141377304
+	
+	sin(x^2 + x / 3), x = 0, h = 1, M = 5
+	D(*, 0) = [0.176784049147, 0.321477647361, 0.332297588048, 0.333196213584, 0.333306678258, 0.333327146260]
+	D(*, 1) = [0.369708846765, 0.335904234944, 0.333495755430, 0.333343499816, 0.333333968927]
+	D(*, 2) = [0.333650594156, 0.333335190129, 0.333333349442, 0.333333333534]
+	D(*, 3) = [0.333330183716, 0.333333320224, 0.333333333282]
+	D(*, 4) = [0.333333332524, 0.333333333333]
+	D(*, 5) = [0.333333333334]
+	error = 0.000000000000408784117667
+\end{verbatim}
+
+
+\section*{分析}
+	各组试验的真实导数值与偏差分别为
+	\begin{enumerate}
+		\item $$(\ln x)'\Big\vert_{x = 3} = \dfrac{1}{3} \qquad error = 1.56306 \times 10^{-9}$$
+		
+		\item $$(\tan x)'\Big\vert_{x = \arcsin 0.8} = \dfrac{1}{1 - \sin^2 x}\Big\vert_{\sin x = 0.8} = \dfrac{25}{9} \qquad error = 4.16835 \times 10^{-4}$$
+		
+		\item $$\left(\sin(x^2 + \dfrac{x}{3})\right)'\Big\vert_{x = 0} = \left(2x + \dfrac{1}{3}\right)\cos(x^2 + \dfrac{x}{3})\Big\vert_{x = 0}  = \dfrac{1}{3} \qquad error = 4.08784 \times 10^{-13}$$
+	\end{enumerate}
+	其中 $error = |D(M,\,M) - f'(x)|$。试验 2的误差明显过高。
+	
+	容易观察出 $x + h = \arcsin 0.8 + 1> \dfrac{\pi}{2}$，与其他结点相隔一个第二类间断点，取到了负值，导致计算出的第一个导数值为负，其不合理性导致了误差的增大。另外，$x + \dfrac{h}{2} = \arcsin 0.8 + 0.5 = 1.4273 \approx 1.5708 = \dfrac{\pi}{2}$，非常靠近该间断点，其函数值相比其他结点而言过大，对最后的计算也产生了负面影响。\\
+	
+	计算出 $\left|D(3,\,3) - \dfrac{25}{9}\right| = 2.44226 \times 10^{-4}$，$\left|D(2,\,2)- \dfrac{25}{9}\right| = 1.60306 \times 10^{-4}$，更证明了这一点。
+	
+	取 $h = 0.25$，重新应用 Richardson 外推法得到如下结果：
+	
+	\begin{verbatim}
+		tan(x), x = arcsin 0.8, h = 0.25, M = 4
+		D(*, 0) = [3.209099924788, 2.872980093931, 2.800901808516, 2.783518000094, 2.779210306821]
+		D(*, 1) = [2.760940150312, 2.776875713378, 2.777723397286, 2.777774409064]
+		D(*, 2) = [2.777938084249, 2.777779909547, 2.777777809849]
+		D(*, 3) = [2.777777398837, 2.777777776520]
+		D(*, 4) = [2.777777778001]
+		error = 0.000000000223547402811164
+	\end{verbatim}
+	可见在一定条件下，选取恰当结点会使计算精度大幅提高。
+	
+\section*{参考资料}
+	\noindent [1] David R. Kincaid \& E. Ward Cheney. {\it Numerical Analysis: Mathematics of Scientific of Computing Third Edition}, Brooks/Cole, 2002.
+
+\end{document}
