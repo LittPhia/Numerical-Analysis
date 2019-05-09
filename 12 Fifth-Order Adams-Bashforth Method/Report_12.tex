@@ -159,19 +159,66 @@
 		
 		
 	\subsection*{三、重新尝试}
-	\noindent 尝试对另一个初值问题作相同的工作。选取第 10 次程序作业中的微分方程：
+	\noindent 重新选取初值条件后做相同的工作。
 	\begin{equation}
 	\left\{\begin{aligned}
+		& y' = \dfrac{x − e^{−x}}{y + e^y}\\
+		& y(0) = 1
+	\end{aligned}\right.
+	\end{equation}
+	记 $g(x,\,y) = y^2 − x^2 + 2e^y − 2e^{−x}$。该方程的真解为
+	\begin{equation}
+		g(x,\,y) = g(0,\,1)
+	\end{equation}
+	
+	\noindent 另外尝试对另一个初值问题作相同的工作。选取第 10 次程序作业中的微分方程：
+	\begin{equation}
+		\left\{\begin{aligned}
 		& y' = \lambda y + \cos x - \lambda \sin x\\
 		& y(0) = 0
-	\end{aligned}\right.
+		\end{aligned}\right.
 	\end{equation}
 	该方程的真解为
 	\begin{equation}
 		y(x) = \sin x
 	\end{equation}
 	
-	取 $\lambda = 1$，此时利用五阶 Adams-Bashforth 公式计算方程在 $x = 1$ 的数值解，用五阶 Runge-Kutta 格式得到初值，节点选取与原题相同。得到如下结果与误差表格。
+	对这两个方程，在第二个方程中取 $\lambda = 1$，利用五阶 Adams-Bashforth 公式计算方程在 $x = 1$ 的数值解，用五阶 Runge-Kutta 格式得到初值，节点选取与原题相同。最后得到如下输出结果与误差表格。
+	\begin{verbatim}
+		EQN:
+		f(x, y) = (x - e^(-x)) / (y + e^y)
+		y(0) = 0
+		Real : y1(1.000000) = 0.963818477129
+		
+		Adams-Bashforth :
+		[k = 3]  y(1.000000) = 0.963807795628, Error = 1.068150139516e-05, Order = -inf
+		[k = 4]  y(1.000000) = 0.963818037888, Error = 4.392407346732e-07, Order = 4.6040
+		[k = 5]  y(1.000000) = 0.963818462452, Error = 1.467741572725e-08, Order = 4.9033
+		[k = 6]  y(1.000000) = 0.963818476661, Error = 4.680933418655e-10, Order = 4.9707
+		[k = 7]  y(1.000000) = 0.963818477114, Error = 1.473499100513e-11, Order = 4.9895
+		[k = 8]  y(1.000000) = 0.963818477129, Error = 4.618527782441e-13, Order = 4.9957
+	\end{verbatim}
+	
+	\begin{table}[htb]
+		\centering
+		\bigskip
+		\begin{small}
+			\begin{tabular}{|c|cc|}
+				\hline
+					k & Error & Order\\
+				\hline
+					3 & 1.0682E-06 & -- \\
+					4 & 4.3924E-07 & 4.6040 \\
+					5 & 1.4677E-09 & 4.9033 \\
+					6 & 4.6809E-10 & 4.9707 \\
+					7 & 1.4735E-12 & 4.9895 \\
+					8 & 4.6185E-13 & 4.9957 \\
+				\hline
+			\end{tabular}
+		\end{small}
+		\caption{\label{table1.label} 精度检验}
+	\end{table}
+
 	\begin{verbatim}
 		EQN:
 		f(x, y) = y + cos(x) - sin(x)
@@ -186,28 +233,28 @@
 		[k = 7]  y(1.000000) = 0.841470984814, Error = 6.183387135650e-12, Order = 4.9448
 		[k = 8]  y(1.000000) = 0.841470984808, Error = 1.959543638463e-13, Order = 4.9798
 	\end{verbatim}
-	
+		
 	\begin{table}[htb]
 		\centering
 		\bigskip
 		\begin{small}
 			\begin{tabular}{|c|cc|}
 				\hline
-					k & Error & Order\\
+				k & Error & Order\\
 				\hline
-					3 & 2.9338E-06 & -- \\
-					4 & 1.4948E-07 & 4.2947 \\
-					5 & 5.6176E-09 & 4.7339 \\
-					6 & 1.9044E-10 & 4.8825 \\
-					7 & 6.1834E-12 & 4.9448 \\
-					8 & 1.9595E-13 & 4.9798 \\
+				3 & 2.9338E-06 & -- \\
+				4 & 1.4948E-07 & 4.2947 \\
+				5 & 5.6176E-09 & 4.7339 \\
+				6 & 1.9044E-10 & 4.8825 \\
+				7 & 6.1834E-12 & 4.9448 \\
+				8 & 1.9595E-13 & 4.9798 \\
 				\hline
 			\end{tabular}
 		\end{small}
-		\caption{\label{table.label} 精度检验}
+		\caption{\label{table2.label} 精度检验}
 	\end{table}
 	
-	五阶 Adams-Bashforth 公式 $O(h^5)$ 的整体截断误差得到了证实。
+	依照两次试验的结果，五阶 Adams-Bashforth 公式 $O(h^5)$ 的整体截断误差得到了证实。
 
 \section*{参考资料}
 	\noindent [1] David R. Kincaid \& E. Ward Cheney. {\it Numerical Analysis: Mathematics of Scientific of Computing Third Edition}, Brooks/Cole, 2002.

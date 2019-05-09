@@ -94,9 +94,9 @@ class InitialValueProblem:
     
 # REQUIED EQUATION
 def y1(x):
-    def eqn(y):
+    def eqn(x, y):
         return y**2 - x**2 + 2 * sp.e**y - 2 * sp.e**(-x)
-    return sp.optimize.fsolve(eqn, -1)[0]
+    return sp.optimize.fsolve(lambda y : eqn(x, y) - eqn(x0, y0), y0 - 1)[0]
 
 def f1(x, y):
     return (x - sp.e**(-x)) / (y + sp.e**y)
@@ -111,6 +111,8 @@ def f2(x, y):
 
     
 # PRINT APPROX-ERROR-ORDER LIST
+real = None
+
 def solve_then_print_aeolist(f, x0, y0, xto):
     print('Adams-Bashforth :')
     error_old = 0
@@ -136,7 +138,6 @@ def solve_then_print_aeolist(f, x0, y0, xto):
 x0 = 0
 y0 = 0
 xto = 1
-
 real = y1(xto)
 print('\nEQN:\n'
       '  f(x, y) = (x - e^(-x)) / (y + e^y)\n'
@@ -145,7 +146,20 @@ print('\nEQN:\n'
 
 solve_then_print_aeolist(f1, x0, y0, xto)
 
+x0 = 0
+y0 = 1
+xto = 1
+real = y1(xto)
+print('\nEQN:\n'
+      '  f(x, y) = (x - e^(-x)) / (y + e^y)\n'
+      '  y(0) = 0\n'
+     'Real : y1(%f) = %.12f\n' % (xto, real))
 
+solve_then_print_aeolist(f1, x0, y0, xto)
+
+x0 = 0
+y0 = 0
+xto = 1
 real = y2(xto)
 print('\nEQN:\n'
       '  f(x, y) = y + cos(x) - sin(x)\n'
