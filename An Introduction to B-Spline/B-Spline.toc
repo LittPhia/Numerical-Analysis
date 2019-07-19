@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {1}样条函数}{2}% 
+\contentsline {section}{\numberline {2}B 样条的定义}{2}% 
+\contentsline {section}{\numberline {3}B 样条的性质}{3}% 
+\contentsline {section}{\numberline {4}数值计算过程}{4}% 
+\contentsline {section}{\numberline {5}导数和积分}{5}% 
+\contentsline {section}{\numberline {6}附加性质}{8}% 
+\contentsline {section}{\numberline {7}空间 $\mathcal {S}_n^k$ 的基}{9}% 
+\contentsline {section}{\numberline {8}插值矩阵}{10}% 
+\contentsline {section}{\numberline {9}存在性}{11}% 
+\contentsline {section}{\numberline {10}非插值逼近方法}{11}% 
+\contentsline {section}{\numberline {11}函数到样条空间的距离}{11}% 
+\contentsline {section}{\numberline {12}参考资料}{11}% 

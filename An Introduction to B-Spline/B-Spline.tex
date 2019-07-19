@@ -440,6 +440,7 @@
     仍采用初始结点序列 $\cdots < t_{-2} < t_{-1} < t_{0} < t_{1} < t_{2} < \cdots$，但我们现在开始考虑 $n$ 个区间 $[t_0,\ t_1],\ [t_1,\ t_2],\ \cdots,\ [t_{n-1},\ t_{n}]$ 上次数 $\leqslant k$ 的具有 $C^{k-1}$ 连续性的分段多项式，并用 $\mathcal{S}_n^k$ 表示所有这样的样条构成的函数族，它们具有定义域 $[t_0,\ t_n]$。下面研究 $\mathcal{S}_n^k$ 与 B 样条 $B_i^k$ 的联系。
 
     \begin{theorem}[空间 $\mathcal{S}_n^k$ 的基定理]
+    \label{theorem-base-S_n^k}
         空间 $\mathcal{S}_n^k$ 的一个基是
         \begin{equation}
         \label{base-S_n^k}
@@ -498,12 +499,76 @@
     \end{equation}
 
     下面的讨论将揭示这个非奇异性的充分必要条件。
-\begin{lemma}
-    若 (\ref{interpolation-matrix}) 式矩阵非奇异，则 $A_{ij} \neq 0$，$1 \leqslant i \leqslant n$。
-\end{lemma}
+    \begin{lemma}
+        若 (\ref{interpolation-matrix}) 式中的矩阵非奇异，则 $A_{ii} \neq 0$，$1 \leqslant i \leqslant n$。
+    \end{lemma}
+    \begin{proof}
+        假设对某个 $r$ 使得 $A_{rr} = 0$，即 $B_r^k (x_r) = 0$，由引理 \ref{lemma-B-Spline-Positive} 知 $x_t \notin (t_{r},\ t_{r+k+1})$。
+        
+        首先假设 $x_r \leqslant t_r$，如果 $i \leqslant r \leqslant j$，那么 $x_i \leqslant x_r \leqslant t_r \leqslant t_j$，并且 $x_i$ 不在 $B_j$ 的支撑中。因而 $A_{ij} = B_j^k (x_i) = 0$。因为对于 $j = r, r+1, \cdots, n$ 都有 $A_{ij} = 0$，所以 $A$ 中前 $r$ 行可以看成 $R^{r-1}$ 中的向量。因此这 $r$ 行线性相关。从而 $A$ 奇异。
+    
+        另一方面，假设 $x_{r} \geqslant t_{r+k+1}$，若 $i \leqslant r \leqslant j$。那么 $x_{i} \geqslant x_{r} \geqslant t_{r+k+1} \geqslant t_{j+k+1}$ 并且 $A_{ij} = B_j^k (x_i) = 0$。因为其第 $r, r+1, \cdots, n$ 都是零，所以前 $r$ 列向量线性相关，得知 $A$ 是奇异的。
+    \end{proof}
+    
+
+    \begin{lemma}
+        若 $k = 1$ 并且对于 $1 \leqslant i \leqslant n$ 有 $t_{i} < x_{i} < t_{i+2}$，则 $A$ 非奇异。
+    \end{lemma}
+    \begin{proof}
+        若 $n = 1$，则 $A$ 是一个 $1 \times 1$ 矩阵并且有唯一元 $A_{11} = B_1^1 (x_1) \neq 0$，可逆。
+
+        现假设对于结点个数小于 $n$ 时引理已被证明。下面考虑 $n$ 个结点的情况，$n \leqslant 2$。如果有一个指标 $r$ 使得 $1 \leqslant r \leqslant n-1$ 并且 $x_{r} \leqslant t_{r+1}$ 那么对于满足 $i \leqslant e < j$ 的任一对指标 $(i,\ j)$，我们有 $x_{i} \leqslant x_{r} \leqslant t_{r+1} \leqslant t_{j}$ 且 $A_{ij} = B_j^1 (x_i) = 0$。因此矩阵 $A$ 有下列形式：
+        \begin{equation*}
+            A = \begin{pmatrix}
+                C & O \\
+                E & D \\
+            \end{pmatrix}
+        \end{equation*}
+        其中 $C$ 是 $r \times r$ 矩阵，$D$ 是 $(n-r) \times (n-r)$ 矩阵。矩阵 $A$ 可逆当且仅当 $C$ 和 $D$ 可逆。这时 $C$ 和 $D$ 是低阶矩阵 (因为这里 $r < n$ 且 $n-1 < n$)。否则 $C$ 和 $D$ 恰与 $A$ 一致。因此，由归纳假设知它们可逆。
+
+        对于 $2 \leqslant r \leqslant n$ 范围内的某些指标 $r$，如果 $x_{r} \geqslant t_{r+1}$，可进行同样的讨论。这是，如果 $j < r \leqslant i$，那么 $A_{ij} = 0$。$A$ 的结构是：
+        \begin{equation*}
+            A = \begin{pmatrix}
+                C & E \\
+                O & D \\
+            \end{pmatrix}
+        \end{equation*}
+        其中 $C$ 是 $(r-1) \times (r-1)$ 矩阵，$D$ 是 $(n-r+1) \times (n-r+1)$ 矩阵。
+
+        仅剩的情况是当 $1 \leqslant i \leqslant n-1$ 时 $x_{i} > t_{i+1}$ 以及当 $2 \leqslant i \leqslant n$ 时 $x_{i} < t_{i+1}$，而只有在 $n = 1$ 或者 $n = 2$ 时才会出现这种情况。这时有 $n = 2$，$k = 1$，$x_1 > t_2$ 以及 $x_2 < t_3$。因此 $t_2 < x_1 < x_2 < t_3$。在区间 $(t_2,\ t_3)$ 上，有 $B_1^1 (x) + B_2^1 (x) = 1$。从而矩阵 $A$ 形如：
+        \begin{equation*}
+            \begin{pmatrix}
+                B_1^1 (x_1) & B_2^1 (x_1) \\
+                B_1^1 (x_2) & B_2^1 (x_2)                
+            \end{pmatrix} = \begin{pmatrix}
+                \lambda & 1 - \lambda \\
+                \mu & 1 - \mu
+            \end{pmatrix}
+        \end{equation*}
+        其行列式为 $\lambda - \mu \equiv B_1^1 (x_1) - B_1^1 (x_2) > 0$。
+    \end{proof}
+
+    
+    \begin{theorem}[Schoenberg-Whitney 定理]
+    \label{theorem-Schoenberg-Whitney}
+        设 $x_1 < x_2 < \cdots < x_n$。已知 $A_{ij} = B_j^k (x_i)$，则矩阵 $A$ 非奇异的充分必要条件是其主对角线上不含零元。
+    \end{theorem}
+    \begin{proof}[Proof]
+        
+    \end{proof}
+    
+        
 \section{存在性}
 
+
 \section{非插值逼近方法}
+    为解释非插值逼近方法，我们介绍一个简练的过程，给定一个函数 $f$，我们用下式定义一个样条函数 $Sf$：
+    \begin{equation}
+        Sf = \sum_{i = -\infty}^{\infty} f(x_i) B_i^k \qquad x_i = \frac{1}{k} (t_{i+1} + \cdots + t_{i+k})
+    \end{equation}
+    当 $k = 0$ 时，令 $x_i = t_i$
+
+\section{函数到样条空间的距离}
     
 
 \section{参考资料}
